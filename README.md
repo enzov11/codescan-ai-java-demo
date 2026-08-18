@@ -90,6 +90,49 @@ En GitHub, el workflow debe quedar en rojo porque el proyecto contiene vulnerabi
 intencionales. Si se corrigen o eliminan `UnsafeSqlExample` y `UnsafeCommandExample`, la
 compuerta deberia pasar.
 
+## Experimento Reproducible
+
+Este repositorio usa dos ramas para demostrar la compuerta de seguridad:
+
+- `main`: contiene vulnerabilidades intencionales. El workflow debe fallar y GitHub Code
+  Scanning debe mostrar alertas.
+- `secure-pass`: corrige los ejemplos vulnerables. El mismo workflow debe pasar.
+
+Para reproducir localmente el caso vulnerable en `main`:
+
+```bash
+git checkout main
+codescan-ai scan . --format json --fail-on never
+```
+
+Resultado esperado:
+
+```text
+files_scanned: 4
+findings: 3
+vulnerable: 2
+review_required: 1
+```
+
+Para probar la compuerta como CI:
+
+```bash
+codescan-ai scan .
+echo $?
+```
+
+Resultado esperado en `main`: codigo de salida `1`.
+
+Para reproducir el caso corregido:
+
+```bash
+git checkout secure-pass
+codescan-ai scan . --format json --fail-on never
+```
+
+Resultado esperado en `secure-pass`: sin vulnerabilidades confirmadas y codigo de salida
+`0` al ejecutar `codescan-ai scan .`.
+
 ## Casos Incluidos
 
 - `SafeSqlExample`: consulta SQL parametrizada.
