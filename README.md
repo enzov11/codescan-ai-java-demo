@@ -96,7 +96,8 @@ Este repositorio usa dos ramas para demostrar la compuerta de seguridad:
 
 - `main`: contiene vulnerabilidades intencionales. El workflow debe fallar y GitHub Code
   Scanning debe mostrar alertas.
-- `secure-pass`: corrige los ejemplos vulnerables. El mismo workflow debe pasar.
+- `secure-pass`: corrige los ejemplos vulnerables y ambiguos. El mismo workflow debe
+  pasar.
 
 Para reproducir localmente el caso vulnerable en `main`:
 
@@ -130,12 +131,23 @@ git checkout secure-pass
 codescan-ai scan . --format json --fail-on never
 ```
 
-Resultado esperado en `secure-pass`: sin vulnerabilidades confirmadas y codigo de salida
-`0` al ejecutar `codescan-ai scan .`.
+Resultado esperado en `secure-pass`:
+
+```text
+files_scanned: 4
+findings: 0
+vulnerable: 0
+review_required: 0
+```
+
+Al ejecutar `codescan-ai scan .`, el codigo de salida esperado es `0`.
 
 ## Casos Incluidos
 
 - `SafeSqlExample`: consulta SQL parametrizada.
-- `UnsafeSqlExample`: SQL dinamico vulnerable a CWE89.
-- `UnsafeCommandExample`: ejecucion dinamica vulnerable a CWE78.
-- `ReviewRequiredSqlExample`: operacion SQL sensible con flujo local no resuelto.
+- `UnsafeSqlExample`: SQL dinamico vulnerable a CWE89 en `main`; parametrizado en
+  `secure-pass`.
+- `UnsafeCommandExample`: ejecucion dinamica vulnerable a CWE78 en `main`; validada en
+  `secure-pass`.
+- `ReviewRequiredSqlExample`: operacion SQL sensible con flujo local no resuelto en
+  `main`; consulta parametrizada en `secure-pass`.
