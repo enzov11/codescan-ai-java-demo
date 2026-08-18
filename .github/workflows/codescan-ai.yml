@@ -1,0 +1,41 @@
+name: CodeScan-AI Security Gate
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  codescan-ai:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout demo project
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install CodeScan-AI
+        run: pip install "codescan-ai @ git+https://github.com/enzov11/analisis-codigo.git"
+
+      - name: Restore CodeScan-AI artifacts
+        run: |
+          curl -L -o codescan-ai-artifacts-cwe15-roadmap-v1.tar.gz \
+            https://github.com/enzov11/analisis-codigo/releases/download/cwe15-roadmap-v1/codescan-ai-artifacts-cwe15-roadmap-v1.tar.gz
+          mkdir -p .codescan
+          tar -xzf codescan-ai-artifacts-cwe15-roadmap-v1.tar.gz -C .codescan
+
+      - name: Run CodeScan-AI
+        run: codescan-ai scan . --output codescan-ai.sarif
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: codescan-ai.sarif

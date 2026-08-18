@@ -1,0 +1,8 @@
+.codescan/
+codescan-ai.sarif
+codescan-ai-report.json
+codescan-ai-artifacts-*.tar.gz
+venv/
+.venv/
+target/
+*.class
