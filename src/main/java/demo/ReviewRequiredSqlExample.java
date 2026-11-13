@@ -1,14 +1,16 @@
 package demo;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class ReviewRequiredSqlExample {
-    public ResultSet runExistingQuery(Connection connection, String existingQuery)
+    public ResultSet findByStatus(Connection connection, String status)
             throws SQLException {
-        Statement statement = connection.createStatement();
-        return statement.executeQuery(existingQuery);
+        PreparedStatement statement = connection.prepareStatement(
+                "SELECT id, username FROM users WHERE status = ?");
+        statement.setString(1, status);
+        return statement.executeQuery();
     }
 }
