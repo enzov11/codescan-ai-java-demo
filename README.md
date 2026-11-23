@@ -33,11 +33,11 @@ pip install "codescan-ai @ git+https://github.com/enzov11/analisis-codigo.git"
 Restaurar los artefactos publicados como release asset:
 
 ```bash
-curl -L -o codescan-ai-artifacts-cwe15-roadmap-v1.tar.gz \
-  https://github.com/enzov11/analisis-codigo/releases/download/cwe15-roadmap-v1/codescan-ai-artifacts-cwe15-roadmap-v1.tar.gz
+curl -L -o codescan-ai-artifacts-codescan-v1.0.0.tar.gz \
+  https://github.com/enzov11/analisis-codigo/releases/download/codescan-v1.0.0/codescan-ai-artifacts-codescan-v1.0.0.tar.gz
 
 mkdir -p .codescan
-tar -xzf codescan-ai-artifacts-cwe15-roadmap-v1.tar.gz -C .codescan
+tar -xzf codescan-ai-artifacts-codescan-v1.0.0.tar.gz -C .codescan
 ```
 
 Ejecutar el analizador:
